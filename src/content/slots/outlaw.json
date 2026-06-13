@@ -3,6 +3,7 @@
   "title": "Outlaw",
   "contributor": "rob",
   "type": "viewer",
+  "category": "projects",
   "viewer": {
     "mode": "gallery",
     "content": [

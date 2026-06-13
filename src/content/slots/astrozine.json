@@ -3,6 +3,7 @@
   "title": "AstroZine",
   "contributor": "rob",
   "type": "viewer",
+  "category": "print",
   "viewer": {
     "mode": "magazine",
     "content": [

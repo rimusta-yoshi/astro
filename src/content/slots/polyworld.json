@@ -3,6 +3,7 @@
   "title": "Polyworld",
   "contributor": "rob",
   "type": "viewer",
+  "category": "projects",
   "viewer": {
     "mode": "gallery",
     "content": [
