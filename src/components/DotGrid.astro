@@ -24,12 +24,15 @@
   const BASE_SIZE = 1.5;
   const MAX_SIZE = 5;
   const RADIUS = 90;
+  // How quickly dots decay back to base size (0–1 per frame, lower = longer trail)
+  const DECAY = 0.08;
   // TODO: confirm dot color with designer — currently pulled from CSS var fallback
   const DOT_COLOR = '#111111';
 
   let mouse = { x: -9999, y: -9999 };
   let cols = 0;
   let rows = 0;
+  let sizes: Float32Array = new Float32Array(0);
   let animFrameId = 0;
 
   function resize() {
@@ -37,6 +40,10 @@
     canvas.height = window.innerHeight;
     cols = Math.ceil(canvas.width / GAP) + 1;
     rows = Math.ceil(canvas.height / GAP) + 1;
+    // Preserve existing sizes where possible, init new dots at BASE_SIZE
+    const next = new Float32Array(cols * rows).fill(BASE_SIZE);
+    next.set(sizes.subarray(0, next.length));
+    sizes = next;
   }
 
   function draw() {
@@ -45,20 +52,25 @@
 
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
+        const i = r * cols + c;
         const x = c * GAP;
         const y = r * GAP;
         const dx = mouse.x - x;
         const dy = mouse.y - y;
         const dist = Math.sqrt(dx * dx + dy * dy);
 
-        let size = BASE_SIZE;
+        let target = BASE_SIZE;
         if (dist < RADIUS) {
           const t = 1 - dist / RADIUS;
-          size = BASE_SIZE + (MAX_SIZE - BASE_SIZE) * t * t;
+          target = BASE_SIZE + (MAX_SIZE - BASE_SIZE) * t * t;
         }
 
+        // Lerp current size toward target — grows fast, decays slowly
+        const current = sizes[i];
+        sizes[i] = current + (target - current) * (target > current ? 0.4 : DECAY);
+
         ctx.beginPath();
-        ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.arc(x, y, sizes[i], 0, Math.PI * 2);
         ctx.fill();
       }
     }
