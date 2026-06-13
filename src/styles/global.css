@@ -12,8 +12,7 @@
   /* TODO: confirm exact red value with designer */
   /* TODO: confirm dot color with designer */
 
-  --font-mono: 'Courier New', 'Lucida Console', monospace;
-  /* TODO: source a proper pixel/monospace font — candidates: VT323, Share Tech Mono, Px437 */
+  --font-mono: 'Silkscreen', 'Courier New', monospace;
 
   --card-size: 160px;
   --card-gap: 24px;
