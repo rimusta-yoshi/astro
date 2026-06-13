@@ -1,0 +1,202 @@
+---
+// SlotCard — one project slot.
+// Renders a Rive canvas if .riv is available, falls back to a static thumbnail.
+// Emits a 'slot-click' CustomEvent for the parent to handle portal vs viewer.
+
+export interface SlotData {
+  id: string;
+  title: string;
+  contributor: string;
+  type: 'portal' | 'viewer';
+  url?: string;
+  rive?: string;
+  thumbnail?: string;
+  viewer?: {
+    mode: 'gallery' | 'magazine' | 'pdf';
+    content: string[];
+  };
+  tags?: string[];
+}
+
+interface Props {
+  slot: SlotData;
+}
+
+const { slot } = Astro.props;
+const hasRive = Boolean(slot.rive);
+const hasThumbnail = Boolean(slot.thumbnail);
+---
+
+<button
+  class="slot-card"
+  data-slot={JSON.stringify(slot)}
+  aria-label={`${slot.title} by ${slot.contributor}`}
+>
+  <div class="slot-canvas-wrapper">
+    {hasRive ? (
+      <canvas
+        class="rive-canvas"
+        data-rive-src={slot.rive}
+        width="140"
+        height="140"
+        aria-hidden="true"
+      ></canvas>
+    ) : hasThumbnail ? (
+      <img
+        class="slot-thumbnail"
+        src={slot.thumbnail}
+        alt=""
+        width="140"
+        height="140"
+        loading="lazy"
+        aria-hidden="true"
+      />
+    ) : (
+      <div class="slot-placeholder" aria-hidden="true">
+        <span class="slot-placeholder-icon">▣</span>
+      </div>
+    )}
+  </div>
+
+  <div class="slot-meta">
+    <span class="slot-title">{slot.title}</span>
+    <span class="slot-contributor">{slot.contributor}</span>
+  </div>
+
+  {slot.type === 'portal' && (
+    <span class="slot-badge slot-badge--portal" aria-hidden="true">↗</span>
+  )}
+</button>
+
+<style>
+  .slot-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: var(--card-size);
+    padding: 10px;
+    background: var(--color-card-bg);
+    border: 1px solid var(--color-card-border);
+    border-radius: var(--card-radius);
+    cursor: pointer;
+    transition: border-color 0.15s ease, transform 0.1s ease;
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    text-align: center;
+    /* Cards sit above the dot grid */
+    position: relative;
+    z-index: 2;
+  }
+
+  .slot-card:hover {
+    border-color: var(--color-card-hover);
+    transform: translateY(-2px);
+    /* TODO: confirm hover treatment with designer — glow? scale? */
+  }
+
+  .slot-card:active {
+    transform: translateY(0);
+  }
+
+  .slot-canvas-wrapper {
+    width: 140px;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 2px;
+    background: #0d0000;
+  }
+
+  .rive-canvas,
+  .slot-thumbnail {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    display: block;
+  }
+
+  .slot-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .slot-placeholder-icon {
+    font-size: 48px;
+    opacity: 0.2;
+  }
+
+  .slot-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .slot-title {
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .slot-contributor {
+    font-size: 0.55rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .slot-badge {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    font-size: 0.6rem;
+    opacity: 0.6;
+  }
+</style>
+
+<script>
+  import Rive from '@rive-app/canvas';
+
+  // Initialise Rive on any canvas that has data-rive-src
+  document.querySelectorAll<HTMLCanvasElement>('.rive-canvas[data-rive-src]').forEach((canvas) => {
+    const src = canvas.dataset.riveSrc;
+    if (!src) return;
+
+    new Rive({
+      src,
+      canvas,
+      autoplay: true,
+      // TODO: wire up stateMachine name once .riv files exist
+      // stateMachines: 'idle',
+      onLoad() {
+        // Rive has loaded — nothing extra needed for idle auto-play
+      },
+      onLoadError() {
+        // .riv missing — hide canvas so parent shows fallback
+        // TODO: gracefully reveal thumbnail fallback if rive errors
+        canvas.style.display = 'none';
+      },
+    });
+  });
+
+  // Dispatch slot-click events so MemoryGrid / index can handle routing
+  document.querySelectorAll<HTMLButtonElement>('.slot-card').forEach((card) => {
+    card.addEventListener('click', () => {
+      const slot = JSON.parse(card.dataset.slot ?? '{}');
+      card.dispatchEvent(
+        new CustomEvent('slot-click', { bubbles: true, detail: { slot } })
+      );
+    });
+  });
+</script>

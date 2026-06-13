@@ -1,0 +1,15 @@
+{
+  "id": "archive-001",
+  "title": "Archive 001",
+  "contributor": "collective",
+  "type": "viewer",
+  "viewer": {
+    "mode": "gallery",
+    "content": [
+      "/media/archive/photo-01.jpg",
+      "/media/archive/photo-02.jpg",
+      "/media/archive/photo-03.jpg"
+    ]
+  },
+  "tags": ["photography", "archive"]
+}

@@ -1,0 +1,87 @@
+---
+// DotGrid — full-viewport canvas dot grid with mouse proximity effect.
+// Sits above background, below cards (z-index: 1).
+---
+
+<canvas id="dot-grid"></canvas>
+
+<style>
+  #dot-grid {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+</style>
+
+<script>
+  const canvas = document.getElementById('dot-grid') as HTMLCanvasElement;
+  const ctx = canvas.getContext('2d')!;
+
+  const GAP = 18;
+  const BASE_SIZE = 1.5;
+  const MAX_SIZE = 5;
+  const RADIUS = 90;
+  // TODO: confirm dot color with designer — currently pulled from CSS var fallback
+  const DOT_COLOR = '#111111';
+
+  let mouse = { x: -9999, y: -9999 };
+  let cols = 0;
+  let rows = 0;
+  let animFrameId = 0;
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    cols = Math.ceil(canvas.width / GAP) + 1;
+    rows = Math.ceil(canvas.height / GAP) + 1;
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = DOT_COLOR;
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const x = c * GAP;
+        const y = r * GAP;
+        const dx = mouse.x - x;
+        const dy = mouse.y - y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+
+        let size = BASE_SIZE;
+        if (dist < RADIUS) {
+          const t = 1 - dist / RADIUS;
+          size = BASE_SIZE + (MAX_SIZE - BASE_SIZE) * t * t;
+        }
+
+        ctx.beginPath();
+        ctx.arc(x, y, size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    animFrameId = requestAnimationFrame(draw);
+  }
+
+  function onMouseMove(e: MouseEvent) {
+    mouse = { x: e.clientX, y: e.clientY };
+  }
+
+  function onMouseLeave() {
+    mouse = { x: -9999, y: -9999 };
+  }
+
+  const ro = new ResizeObserver(() => {
+    resize();
+  });
+  ro.observe(document.documentElement);
+
+  resize();
+  draw();
+
+  window.addEventListener('mousemove', onMouseMove);
+  window.addEventListener('mouseleave', onMouseLeave);
+</script>

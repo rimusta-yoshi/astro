@@ -1,17 +1,56 @@
 ---
+import '../styles/global.css';
+import DotGrid from '../components/DotGrid.astro';
+import MemoryGrid from '../components/MemoryGrid.astro';
+import ViewerModal from '../components/ViewerModal.astro';
+import type { SlotData } from '../components/SlotCard.astro';
 
+// Load all slot JSON files at build time using Vite's import.meta.glob
+const slotModules = import.meta.glob<SlotData>('../content/slots/*.json', { eager: true });
+const slots: SlotData[] = Object.values(slotModules);
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>ASTRO_CORP_MEMORY</title>
+    <meta name="description" content="Collective portfolio." />
+  </head>
+
+  <body>
+    <!-- z-index 1: dot grid -->
+    <DotGrid />
+
+    <!-- z-index 2: content -->
+    <main class="site-main">
+      <header class="site-header">
+        <h1 class="site-title">ASTRO_CORP_MEMORY</h1>
+        <!-- TODO: add contributor nav / filter controls here once filtering is scoped -->
+      </header>
+
+      <MemoryGrid slots={slots} />
+    </main>
+
+    <!-- z-index 100: modal -->
+    <ViewerModal />
+  </body>
 </html>
+
+<style>
+  .site-main {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .site-header {
+    padding: 32px 24px 0;
+    text-align: center;
+  }
+</style>

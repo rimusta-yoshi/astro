@@ -1,0 +1,65 @@
+---
+// GalleryViewer — image grid / lightbox for photography and visual work.
+// Receives an array of image paths.
+
+interface Props {
+  images: string[];
+  title: string;
+}
+
+const { images, title } = Astro.props;
+---
+
+<div class="gallery-viewer" role="region" aria-label={`Gallery: ${title}`}>
+  <div class="gallery-grid">
+    {images.map((src, i) => (
+      <button
+        class="gallery-thumb"
+        data-index={i}
+        data-src={src}
+        aria-label={`Image ${i + 1} of ${images.length}`}
+      >
+        <img src={src} alt="" loading="lazy" />
+      </button>
+    ))}
+  </div>
+
+  {/* TODO: lightbox overlay — click thumb to expand full-screen */}
+  {/* TODO: keyboard nav between lightbox images */}
+</div>
+
+<style>
+  .gallery-viewer {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 24px;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+  }
+
+  .gallery-thumb {
+    all: unset;
+    cursor: pointer;
+    display: block;
+    overflow: hidden;
+    border-radius: 2px;
+    background: #111;
+  }
+
+  .gallery-thumb img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.15s ease;
+  }
+
+  .gallery-thumb:hover img {
+    opacity: 0.85;
+  }
+</style>

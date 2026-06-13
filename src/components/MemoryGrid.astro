@@ -1,0 +1,29 @@
+---
+import SlotCard, { type SlotData } from './SlotCard.astro';
+
+interface Props {
+  slots: SlotData[];
+}
+
+const { slots } = Astro.props;
+---
+
+<section class="memory-grid" aria-label="Project slots">
+  {slots.map((slot) => (
+    <SlotCard slot={slot} />
+  ))}
+</section>
+
+<style>
+  .memory-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--card-gap);
+    padding: 48px 24px;
+    /* Grid sits above dot layer, below modal */
+    position: relative;
+    z-index: 2;
+    /* TODO: decide min/max width, centering constraints with designer */
+  }
+</style>

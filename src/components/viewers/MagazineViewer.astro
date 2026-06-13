@@ -1,0 +1,48 @@
+---
+// MagazineViewer — scrollable vertical layout, full-bleed images.
+// Used for zines, magazine spreads, print work.
+
+interface Props {
+  spreads: string[];
+  title: string;
+}
+
+const { spreads, title } = Astro.props;
+---
+
+<div class="magazine-viewer" role="region" aria-label={`Magazine: ${title}`}>
+  {spreads.map((src, i) => (
+    <figure class="spread" aria-label={`Spread ${i + 1}`}>
+      <img
+        src={src}
+        alt={`${title} — spread ${i + 1}`}
+        loading={i === 0 ? 'eager' : 'lazy'}
+      />
+    </figure>
+  ))}
+  {/* TODO: decide if page numbers / progress indicator are needed */}
+</div>
+
+<style>
+  .magazine-viewer {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    /* TODO: confirm scroll behaviour with designer — snap per spread? free scroll? */
+  }
+
+  .spread {
+    width: 100%;
+    scroll-snap-align: start;
+    margin: 0;
+    line-height: 0;
+  }
+
+  .spread img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+  }
+</style>

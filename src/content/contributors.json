@@ -1,0 +1,14 @@
+{
+  "contributors": [
+    {
+      "id": "rob",
+      "name": "Rob",
+      "role": "designer"
+    },
+    {
+      "id": "collective",
+      "name": "Collective",
+      "role": "group"
+    }
+  ]
+}

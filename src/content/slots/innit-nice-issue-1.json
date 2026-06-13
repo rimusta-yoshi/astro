@@ -1,0 +1,15 @@
+{
+  "id": "innit-nice-issue-1",
+  "title": "Innit Nice — Issue 1",
+  "contributor": "rob",
+  "type": "viewer",
+  "viewer": {
+    "mode": "magazine",
+    "content": [
+      "/media/innit-nice/spread-01.jpg",
+      "/media/innit-nice/spread-02.jpg"
+    ]
+  },
+  "thumbnail": "/media/placeholder-innit-nice.png",
+  "tags": ["magazine", "print"]
+}
