@@ -24,8 +24,8 @@
   const BASE_SIZE = 1.5;
   const MAX_SIZE = 5;
   const RADIUS = 90;
-  // How quickly dots decay back to base size (0–1 per frame, lower = longer trail)
-  const DECAY = 0.08;
+  // How quickly dots decay back to base size — 0.015 ≈ ~2 second trail at 60fps
+  const DECAY = 0.015;
   // TODO: confirm dot color with designer — currently pulled from CSS var fallback
   const DOT_COLOR = '#111111';
 

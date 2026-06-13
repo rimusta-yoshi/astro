@@ -1,0 +1,14 @@
+{
+  "id": "polyworld",
+  "title": "Polyworld",
+  "contributor": "rob",
+  "type": "viewer",
+  "viewer": {
+    "mode": "gallery",
+    "content": [
+      "/media/polyworld/cockpit.jpg"
+    ]
+  },
+  "thumbnail": "/media/polyworld/cockpit.jpg",
+  "tags": ["game", "interactive"]
+}

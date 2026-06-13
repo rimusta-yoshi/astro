@@ -1,0 +1,14 @@
+{
+  "id": "outlaw",
+  "title": "Outlaw",
+  "contributor": "rob",
+  "type": "viewer",
+  "viewer": {
+    "mode": "gallery",
+    "content": [
+      "/media/outlaw/01.jpg"
+    ]
+  },
+  "thumbnail": "/media/outlaw/01.jpg",
+  "tags": ["print", "design"]
+}

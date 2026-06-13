@@ -6,10 +6,10 @@
   "viewer": {
     "mode": "magazine",
     "content": [
-      "/media/innit-nice/spread-01.jpg",
-      "/media/innit-nice/spread-02.jpg"
+      "/media/innit-nice/cover-yellow.jpg",
+      "/media/innit-nice/cover-blue.jpg"
     ]
   },
-  "thumbnail": "/media/placeholder-innit-nice.png",
+  "thumbnail": "/media/innit-nice/cover-yellow.jpg",
   "tags": ["magazine", "print"]
 }

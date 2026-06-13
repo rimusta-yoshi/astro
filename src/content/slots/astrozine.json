@@ -1,0 +1,14 @@
+{
+  "id": "astrozine",
+  "title": "AstroZine",
+  "contributor": "rob",
+  "type": "viewer",
+  "viewer": {
+    "mode": "magazine",
+    "content": [
+      "/media/astrozine/cover.jpg"
+    ]
+  },
+  "thumbnail": "/media/astrozine/cover.jpg",
+  "tags": ["magazine", "print"]
+}

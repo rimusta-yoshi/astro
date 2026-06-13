@@ -1,0 +1,14 @@
+{
+  "id": "paranormal-division",
+  "title": "Paranormal Division",
+  "contributor": "rob",
+  "type": "viewer",
+  "viewer": {
+    "mode": "gallery",
+    "content": [
+      "/media/paranormal-division/01.jpg"
+    ]
+  },
+  "thumbnail": "/media/paranormal-division/01.jpg",
+  "tags": ["design"]
+}
