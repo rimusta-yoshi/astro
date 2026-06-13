@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://your-username.github.io', // TODO: update with actual GitHub username
-  base: '/astro-corp', // TODO: update with actual repo name
+  site: 'https://rimusta-yoshi.github.io',
+  base: '/astro',
   output: 'static',
 });
